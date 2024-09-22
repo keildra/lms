@@ -21,7 +21,7 @@ class LeadFactory extends Factory
             'status' => $this->faker->randomElement(['New Lead', 'NR 1', 'NR 2', 'NR 3']),
             'mobile' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
-            'converted_at' => $this->faker->dateTimeBetween('-1 year', '+1 year')->format('Y-m-d H:i:s'),
+            'converted_at' => null,
         ];
     }
 }

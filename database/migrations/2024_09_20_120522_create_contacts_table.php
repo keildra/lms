@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lead_id')->constrained('leads');
+            $table->foreignId('lead_id')->constrained('leads')->onDelete('cascade');
             $table->string('contact_name');
             $table->enum('converted_status', ['New Lead', 'NR 1', 'NR 2', 'NR 3'])->default('New Lead');
             $table->enum('stage', ['Will Send Ticket', 'Closed Won', 'Closed Lost'])->default('Will Send Ticket');

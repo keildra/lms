@@ -10,7 +10,6 @@ class Lead extends Model
     use HasFactory;
 
     public $fillable = [
-        'id',
         'lead_name',
         'status',
         'mobile',
