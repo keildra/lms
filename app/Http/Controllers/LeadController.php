@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Lead;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; 
 
@@ -12,9 +13,14 @@ class LeadController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $leads = Lead::all();
+        $converted = $request->get('converted', false);
+        if ($converted) {
+            $leads = Lead::whereNotNull('converted_at')->get();
+        } else {
+            $leads = Lead::all();
+        }
         return view('lead.tableView')->with('leads', $leads);
     }
 
@@ -80,5 +86,20 @@ class LeadController extends Controller
         Log::info("deleted destroyed",$lead->toArray());
         $lead->delete();
         return redirect('leads');
+    }
+    /**
+     * Convert the lead into a contact.
+     */
+    public function convert(Request $request, $id)
+    {
+        $lead = Lead::findOrFail($id);
+        $contact = new Contact();
+        $contact->contact_name = $lead->lead_name;
+        $contact->lead_id = $lead->id;
+        $contact->converted_status = $lead->status;
+        $contact->save();
+        $lead->converted_at = now();
+        $lead->save();
+        return redirect()->route('leads.index')->with('success', 'Lead converted to contact successfully.');
     }
 }

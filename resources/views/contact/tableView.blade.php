@@ -12,38 +12,24 @@
         
     <nav class="navbar navbar-inverse">
         <ul class="nav navbar-nav">
-            <li><a href="{{ URL::to('leads') }}">Leads</a></li>
-            <li><a href="{{ URL::to('leads/create') }}">Create a Lead</a>
+            <li><a href="{{ URL::to('contacts') }}">Contacts</a></li>
+            <li><a href="{{ URL::to('contacts/create') }}">Create a Contact</a>
         </ul>
     </nav>
-    
-    <form action="{{ route('leads.index') }}" method="GET">
-        <button type="submit" name="converted" value="1">Show Converted Leads</button>
-        <button type="submit" name="converted" value="0">Show All Leads</button>
-    </form>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                Leads Table
+                Contacts Table
             </caption>
 
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Lead Name
+                        Contact Name
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Status
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Mobile
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Email
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Converted At
+                        Converted Status
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Created At
@@ -60,29 +46,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($leads as $lead)
+                @foreach ($contacts as $contact)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->lead_name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->status }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->mobile }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->email }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->converted_at }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->created_at }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $lead->updated_at }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $contact->contact_name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $contact->converted_status }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $contact->created_at }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $contact->updated_at }}</td>
                         <td class="px-6 py-4 text-sm text-gray-500">                    
-                            <a href="{{ route('leads.edit', $lead) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="{{ route('contacts.edit', $contact) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-500">
-                            <form action="{{ route('leads.convert', $lead->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" title="Convert Lead">Convert</button>
-                            </form>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">
-                            <form method="POST" action="{{ url('/leads' . '/' .$lead->id) }}">
+                            <form method="POST" action="{{ url('/contacts' . '/' .$contact->id) }}">
                                 {{ method_field('DELETE') }}
                                 {{ csrf_field() }}
-                                <button type="submit" title="Delete Lead">Delete</button>
+                                <button type="submit" title="Delete contact">Delete</button>
                             </form>
                         </td>
                     </tr>
