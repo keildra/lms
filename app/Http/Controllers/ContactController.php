@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use App\Models\Lead;
 use Illuminate\Support\Facades\Log; 
 
 class ContactController extends Controller
@@ -30,11 +31,19 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new Contact;
-        $contact->lead_id = $request->get('lead_id');
-        $contact->contact_name = $request->get('contact_name');
-        $contact->converted_status = $request->get('converted_status');
-        $contact->stage = $request->get('stage');
+        $lead_id = $request->get('lead_id');
+        $lead = Lead::withTrashed()->find($lead_id);
+        if (!!$lead && $lead->converted_at == NULL){
+            $contact = new Contact;
+            $contact->lead_id = $request->get('lead_id');
+            $contact->contact_name = $request->get('contact_name');
+            $contact->converted_status = $request->get('converted_status');
+            $contact->stage = $request->get('stage');
+            $contact->save();
+            return redirect('contacts')->with('success', 'Contact created successfully.');
+        } else {
+            return redirect()->back()->with('error', 'This lead has already been converted.');
+        }
     }
 
     /**
@@ -62,7 +71,6 @@ class ContactController extends Controller
         Log::info("contact update",$request->all());
         $contact = Contact::findOrFail($id);
         $contact->update([
-            'lead_id' => $request->lead_id,
             'contact_name' => $request->contact_name,
             'converted_status' => $request->converted_status,
             'stage' => $request->stage,
@@ -78,6 +86,7 @@ class ContactController extends Controller
         $contact = Contact::findOrFail($id);
         Log::info("deleted destroyed",$contact->toArray());
         $contact->delete();
+        $contact->lead->converted_at = NULL;
         return redirect('contacts');
     }
 }

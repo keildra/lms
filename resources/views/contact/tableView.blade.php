@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        @vite('resources/css/app.css')
+@extends('layout')
 
-        <title>assignment</title>
+@section('content')
 
-    </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        
-    <nav class="navbar navbar-inverse">
-        <ul class="nav navbar-nav">
-            <li><a href="{{ URL::to('contacts') }}">Contacts</a></li>
-            <li><a href="{{ URL::to('contacts/create') }}">Create a Contact</a>
-        </ul>
-    </nav>
-
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="flex justify-between m-4">
+        <a href="{{ URL::to('contacts/create') }}">
+            <button class="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font py-2 px-4 rounded">Create A New Contact</button>
+        </a>
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                Contacts Table
-            </caption>
-
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -70,3 +57,5 @@
 
     </body>
 </html>
+
+@endsection

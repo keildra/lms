@@ -5,7 +5,7 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
-    return view('assignment');
+    return view('layout');
 });
 
 Route::resource('leads', LeadController::class);

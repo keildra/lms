@@ -93,13 +93,15 @@ class LeadController extends Controller
     public function convert(Request $request, $id)
     {
         $lead = Lead::findOrFail($id);
-        $contact = new Contact();
-        $contact->contact_name = $lead->lead_name;
-        $contact->lead_id = $lead->id;
-        $contact->converted_status = $lead->status;
-        $contact->save();
-        $lead->converted_at = now();
-        $lead->save();
+        if ($lead->converted_at == NULL) {
+            $contact = new Contact();
+            $contact->contact_name = $lead->lead_name;
+            $contact->lead_id = $lead->id;
+            $contact->converted_status = $lead->status;
+            $contact->save();
+            $lead->converted_at = now();
+            $lead->save();
+        }
         return redirect()->route('leads.index')->with('success', 'Lead converted to contact successfully.');
     }
 }
